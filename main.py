@@ -11,9 +11,24 @@ html_template = """
 <head>
     <title>Text Analyzer</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #0c8346;
+            --secondary: #7fcc8c;
+            --accent: #ffbd59;
+            --dark: #1e3a2b;
+            --light: #f5fff7;
+        }
+        
+        html {
+            height: 100%;
+            scroll-behavior: smooth;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background-image: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            font-family: 'Poppins', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1587502537745-84b86da1204f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -21,84 +36,266 @@ html_template = """
             height: 100vh;
             margin: 0;
             padding: 0;
-            color: #333;
+            color: var(--dark);
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(12, 131, 70, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: -1;
+        }
+        
         .container {
             width: 90%;
             max-width: 800px;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.85);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
+                        0 0 20px rgba(12, 131, 70, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(0);
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
         }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
         h1 {
-            color: #2e7d32;
+            color: var(--primary);
             text-align: center;
             margin-bottom: 30px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+            width: 100%;
         }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
         textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #a5d6a7;
-            border-radius: 10px;
+            padding: 18px;
+            border: 2px solid var(--secondary);
+            border-radius: 15px;
             font-size: 16px;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.9);
             resize: vertical;
-            transition: border-color 0.3s;
+            transition: all 0.4s ease;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
         }
+        
         textarea:focus {
-            border-color: #4caf50;
+            border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+            box-shadow: 0 0 0 4px rgba(12, 131, 70, 0.2), 
+                        inset 0 2px 6px rgba(0, 0, 0, 0.05);
+            transform: scale(1.005);
         }
+        
         .button-container {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 25px;
+            position: relative;
         }
+        
         input[type="submit"] {
-            background-color: #4caf50;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            padding: 12px 35px;
-            border-radius: 8px;
+            padding: 14px 40px;
+            border-radius: 50px;
             font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s;
+            box-shadow: 0 10px 20px rgba(12, 131, 70, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
+        
+        input[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            transition: all 0.4s;
+            z-index: -1;
+            border-radius: 50px;
+        }
+        
         input[type="submit"]:hover {
-            background-color: #2e7d32;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(12, 131, 70, 0.4);
         }
+        
+        input[type="submit"]:hover::before {
+            width: 100%;
+        }
+        
         .results {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(230, 255, 230, 0.7);
-            border-radius: 10px;
-            border-left: 5px solid #4caf50;
+            margin-top: 35px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 255, 240, 0.9) 100%);
+            border-radius: 18px;
+            border-left: 6px solid var(--primary);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(0);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
         }
+        
+        .results::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 65%);
+            opacity: 0;
+            transition: opacity 1.5s;
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+        
+        .results:hover::before {
+            opacity: 1;
+        }
+        
+        .results:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
         .results h2 {
-            color: #2e7d32;
+            color: var(--primary);
             margin-top: 0;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
         }
+        
+        .results h2::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
         .results p {
             font-size: 18px;
-            margin: 10px 0;
+            margin: 15px 0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            border-left: 3px solid var(--secondary);
+            transition: all 0.3s;
         }
+        
+        .results p:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
         .nature-decoration {
             text-align: center;
             margin: 20px 0;
-            font-size: 24px;
-            color: #4caf50;
+            font-size: 28px;
+            line-height: 1.5;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: breathe 4s ease-in-out infinite;
         }
-        html {
-            height: 100%;
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        .leaf {
+            display: inline-block;
+            transform-origin: center;
+            animation: sway 3s ease-in-out infinite;
+        }
+        
+        @keyframes sway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        .leaf:nth-child(odd) {
+            animation-duration: 3.5s;
+            animation-direction: alternate;
+        }
+        
+        .leaf:nth-child(3n) {
+            animation-duration: 4s;
+        }
+        
+        .firefly {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 100, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 100, 0.5);
+            animation: fly 20s linear infinite, blink 2s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        
+        @keyframes fly {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(100px, -50px); }
+            50% { transform: translate(200px, 100px); }
+            75% { transform: translate(100px, 200px); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
@@ -107,19 +304,23 @@ html_template = """
         <h1>🌿 Text Analyzer 🌿</h1>
         
         <div class="nature-decoration">
-            🌳 🌻 🍃 🌷 🌿
+            <span class="leaf">🌳</span> 
+            <span class="leaf">🌻</span> 
+            <span class="leaf">🍃</span> 
+            <span class="leaf">🌷</span> 
+            <span class="leaf">🌿</span>
         </div>
         
         <form method="post">
-            <textarea name="text" rows="10" cols="30">{{ text }}</textarea>
+            <textarea name="text" rows="10" cols="30" placeholder="Type or paste your text here...">{{ text }}</textarea>
             <div class="button-container">
-                <input type="submit" value="Analyze">
+                <input type="submit" value="Analyze Text">
             </div>
         </form>
         
         {% if result %}
         <div class="results">
-            <h2>✨ Analysis Results:</h2>
+            <h2>✨ Analysis Results</h2>
             <p>📝 Total Characters: {{ result['total_characters'] }}</p>
             <p>🔤 Total Letters: {{ result['total_letters'] }}</p>
             <p>📚 Total Words: {{ result['total_words'] }}</p>
@@ -127,9 +328,67 @@ html_template = """
         {% endif %}
         
         <div class="nature-decoration">
-            🌿 🌼 🍂 🌱 🌳
+            <span class="leaf">🌿</span> 
+            <span class="leaf">🌼</span> 
+            <span class="leaf">🍂</span> 
+            <span class="leaf">🌱</span> 
+            <span class="leaf">🌳</span>
         </div>
+        
+        <!-- Animated fireflies -->
+        <div class="firefly" style="top: 10%; left: 10%;"></div>
+        <div class="firefly" style="top: 20%; left: 80%;"></div>
+        <div class="firefly" style="top: 50%; left: 15%;"></div>
+        <div class="firefly" style="top: 70%; left: 85%;"></div>
+        <div class="firefly" style="top: 85%; left: 40%;"></div>
     </div>
+
+    <script>
+        // Create additional random fireflies
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('body');
+            for (let i = 0; i < 15; i++) {
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.top = Math.random() * 100 + '%';
+                firefly.style.left = Math.random() * 100 + '%';
+                
+                // Randomize animation properties
+                firefly.style.animationDuration = (15 + Math.random() * 15) + 's, ' + 
+                                                (1 + Math.random() * 3) + 's';
+                firefly.style.animationDelay = Math.random() * 5 + 's, ' + 
+                                              Math.random() * 1 + 's';
+                
+                container.appendChild(firefly);
+            }
+            
+            // Add subtle text effects
+            const textarea = document.querySelector('textarea');
+            if (textarea) {
+                textarea.addEventListener('focus', function() {
+                    this.style.transform = 'scale(1.01)';
+                });
+                
+                textarea.addEventListener('blur', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
+            
+            // Add results animation
+            const results = document.querySelector('.results');
+            if (results) {
+                setTimeout(() => {
+                    results.style.opacity = '0';
+                    results.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        results.style.transition = 'all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                        results.style.opacity = '1';
+                        results.style.transform = 'translateY(0)';
+                    }, 100);
+                }, 100);
+            }
+        });
+    </script>
 </body>
 </html>
 """
