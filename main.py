@@ -122,6 +122,7 @@ html_template = """
             <h2>✨ Analysis Results:</h2>
             <p>📝 Total Characters: {{ result['total_characters'] }}</p>
             <p>🔤 Total Letters: {{ result['total_letters'] }}</p>
+            <p>📚 Total Words: {{ result['total_words'] }}</p>
         </div>
         {% endif %}
         
@@ -142,6 +143,11 @@ def get_form():
 def analyze_text(text: str = Form(...)):
     total_characters = len(text)
     total_letters = sum(c.isalpha() for c in text)
-    result = {"total_characters": total_characters, "total_letters": total_letters}
+    total_words = len(text.split()) if text.strip() else 0
+    result = {
+        "total_characters": total_characters, 
+        "total_letters": total_letters,
+        "total_words": total_words
+    }
     template = Template(html_template)
     return template.render(result=result, text=text)
