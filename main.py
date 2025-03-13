@@ -69,6 +69,11 @@ html_template = """
             animation: float 6s ease-in-out infinite;
             position: relative;
             z-index: 1;
+            transition: animation 0.3s;
+        }
+        
+        .container.typing {
+            animation: none;
         }
         
         @keyframes float {
@@ -362,15 +367,21 @@ html_template = """
                 container.appendChild(firefly);
             }
             
-            // Add subtle text effects
+            // Add subtle text effects and stop container animation when typing
             const textarea = document.querySelector('textarea');
+            const containerElement = document.querySelector('.container');
+            
             if (textarea) {
                 textarea.addEventListener('focus', function() {
                     this.style.transform = 'scale(1.01)';
+                    // Stop container animation when typing
+                    containerElement.classList.add('typing');
                 });
                 
                 textarea.addEventListener('blur', function() {
                     this.style.transform = 'scale(1)';
+                    // Resume container animation when not typing
+                    containerElement.classList.remove('typing');
                 });
             }
             
