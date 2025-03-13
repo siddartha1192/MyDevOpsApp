@@ -13,6 +13,10 @@ html_template = """
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         
+        * {
+            box-sizing: border-box;
+        }
+        
         :root {
             --primary: #0c8346;
             --secondary: #7fcc8c;
@@ -70,6 +74,7 @@ html_template = """
             position: relative;
             z-index: 1;
             transition: animation 0.3s;
+            box-sizing: border-box;
         }
         
         .container.typing {
@@ -117,6 +122,8 @@ html_template = """
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
             color: var(--dark);
             font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            max-width: 100%;
         }
         
         textarea:focus {
@@ -301,6 +308,47 @@ html_template = """
         @keyframes blink {
             0%, 100% { opacity: 0.1; }
             50% { opacity: 1; }
+        }
+        
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .results p {
+                font-size: 16px;
+                padding: 8px 12px;
+            }
+            
+            input[type="submit"] {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            textarea {
+                padding: 15px;
+            }
+            
+            .nature-decoration {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
