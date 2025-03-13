@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: text-analyzer
-        image: text-analyzer:latest
+        image: siddartha1192/text-analyser:latst
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
